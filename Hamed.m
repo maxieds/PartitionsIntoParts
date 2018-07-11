@@ -343,20 +343,15 @@ Function[cellText,
 ];
 
 PrintNotebookNotification[baseColor_:Green] := 
-     PrintNotebookNotificationDetailed[Darker[baseColor], Lighter[baseColor], Glow[baseColor]];
+     PrintNotebookNotificationDetailed[Darker[baseColor, 0.8], Lighter[baseColor, 0.5], Black];
 
 PrintError[errorText_] := 
-     PrintNotebookNotification @@ {StringJoin["\[ScriptX]\n", " !!! ERROR : >>> @ ", 
-                                             GetDatestamp[], "\n", errorText, "\n\[ScriptX]"]}
+     PrintNotebookNotification[Red][StringJoin["\[ScriptX]\n", " !!! ERROR : >>> @ ", 
+                                               GetDatestamp[], "\n", errorText, "\n\[ScriptX]"]]
 
 (*************************************************************************)
 (**** : Package help and information printing routines              : ****) 
 (*************************************************************************) 
-
-MemoryInUseByPackage::usage = "Returns how much memory (in bytes) the package is storing with respect to " <> 
-                              "its cached dynamic-programming-like function return values.";
-MemoryInUseByPackage[] := MemoryInUse[LocalPartitionsPackageName] - StartMemoryInUse;
-
 
 PackageSingleStringFromList[headerStr_, listComps_, bulletMarker_:"\[RightTriangle]"] := 
 Module[{constructListElementFunc}, 
@@ -365,11 +360,11 @@ Module[{constructListElementFunc},
 ];
 
 Options[GetHPPackageUsageString] = {BulletPointMarker -> "\[RightTriangle]"};
-GetHPPackageUsageString[] := GetHPPackageUsageString[] = Module[{lineFunc, usageDescList}, 
-     lineFunc = ToString[ToString[" "] <> ToString[BulletPointMarker] <> " " <> ToString[#]]&;
+GetHPPackageUsageString[OptionsPattern[]] := Module[{lineFunc, usageDescList}, 
+     lineFunc = ToString[ToString[" "] <> ToString[OptionValue[BulletPointMarker]] <> " " <> ToString[#]]&;
      usageDescList = {"Loading the Package: \n", 
                       lineFunc["SetDirectory[\"/path/to/saved/HamedDotMFile\"]\n"], 
-                      lineFunc["<<Hamed.m\n\n"], 
+                      lineFunc["<< Hamed.m\n\n"], 
                       "Core Functions Provided by the Package: \n", 
                       lineFunc["HP[p, a, n], HamedPartitions[p, a, n];\n"], 
                       lineFunc["PrintPartitionStats[p, a, n]; RunUnitTests[] (if you so please); etc.;\n\n"], 
@@ -380,12 +375,12 @@ GetHPPackageUsageString[] := GetHPPackageUsageString[] = Module[{lineFunc, usage
      Return[StringJoin @@ usageDescList];
 ];
 
-Options[HPPackageExamples] = {NotebookDisplayColor -> RGBColor[1.0, 0.0, 0.54]};
-HPPackageUsage[] := HPPackageUsage[] = PrintNotebookNotification[NotebookDisplayColor] @@ 
-     {GetHPPackageUsageString[]};
+Options[HPPackageUsage] = {NotebookDisplayColor -> RGBColor[1.0, 0.0, 0.54]};
+HPPackageUsage[OptionsPattern[]] := 
+     PrintNotebookNotification[OptionValue[NotebookDisplayColor]][GetHPPackageUsageString[]];
 
-Options[HPPackageExamples] = {NotebookDisplayColor -> Yellow};
-HPPackageHelp[] := HPPackageHelp[] = Module[{helpHeader, helpStr}, 
+Options[HPPackageHelp] = {NotebookDisplayColor -> Yellow};
+HPPackageHelp[OptionsPattern[]] := Module[{helpHeader, helpStr}, 
      helpHeader = "Helful Information About the Package: ";
      helpStr = "You are fortunate in using this package in so much as its authors have decorated the " <> 
                "core functions you will be using with Fn::usage package strings. This means that " <> 
@@ -396,13 +391,13 @@ HPPackageHelp[] := HPPackageHelp[] = Module[{helpHeader, helpStr},
                "?" <> LocalPartitionsPackageName <> "`* ... " <> 
                "Alternatively, we have added the separate helper functions " <> 
                "HPPackageUsage[] and HPPackageExamples[] for you to use and explore. Enjoy!";
-    PrintNotebookNotification[NotebookDisplayColor] @@ {helpHeader <> "\n\n" <> helpStr};
+    PrintNotebookNotification[OptionValue[NotebookDisplayColor]][helpHeader <> "\n\n" <> helpStr];
 ];             
 
-Options[HPPackageExamples] = {NotebookDisplayColor -> Green};
-HPPackageExamples[] := HPPackageExamples[] = 
-     PrintNotebookNotification[NotebookDisplayColor] @@ 
-     List[PackageSingleStringFromList["Examples of the Package in Use: ", {
+Options[HPPackageExamples] = {NotebookDisplayColor -> Cyan};
+HPPackageExamples[OptionsPattern[]] := 
+     PrintNotebookNotification[OptionValue[NotebookDisplayColor]][
+     PackageSingleStringFromList["Examples of the Package in Use: ", {
      "Please see the sample notebook at " <> 
      "https://github.com/maxieds/PartitionsIntoParts/blob/master/hameds-partition-function.nb."
      }]];
@@ -414,7 +409,7 @@ HPPackageExamples[] := HPPackageExamples[] =
 
 (** Local package loaded announcement: **)
 packageAnnouncement = ToString[LocalPartitionsPackageName] <> " Package (2018.07.11-v2) Loaded!\n\n";
-PrintNotebookNotification @@ {packageAnnouncement <> GetHPPackageUsageString[]}
+PrintNotebookNotification[][packageAnnouncement <> GetHPPackageUsageString[]]
 
 Protect[PartitionsIntoParts`HP, PartitionsIntoParts`HamedPartitions]
 

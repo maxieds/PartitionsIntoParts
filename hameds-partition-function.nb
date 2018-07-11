@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     52586,       1512]
-NotebookOptionsPosition[     52068,       1488]
-NotebookOutlinePosition[     52399,       1503]
-CellTagsIndexPosition[     52356,       1500]
+NotebookDataLength[     92473,       2623]
+NotebookOptionsPosition[     91557,       2585]
+NotebookOutlinePosition[     91888,       2600]
+CellTagsIndexPosition[     91845,       2597]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -21,31 +21,1128 @@ Notebook[{
 
 Cell[CellGroupData[{
 Cell[BoxData[
- RowBox[{"<<", "Hamed.m"}]], "Input",
- CellChangeTimes->{{3.7189904474641123`*^9, 3.7189904494032583`*^9}}],
+ RowBox[{"Dynamic", "[", 
+  RowBox[{"Refresh", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ToString", "[", 
+      RowBox[{"N", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"MaxMemoryUsed", "[", "]"}], " ", "/", " ", "1000000"}], ",",
+         "6"}], "]"}], "]"}], " ", "<>", " ", "\"\< MB Used ... \>\""}], ",", 
+    " ", 
+    RowBox[{"UpdateInterval", "\[Rule]", "2.5"}]}], "]"}], "]"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.740331559593397*^9, 3.740331626980438*^9}}],
 
-Cell["Hamed.m Package (2018.07.11-v2) Loaded ... ", "Print",
- CellFrame->0.5,
- CellFrameMargins->14,
- CellFrameColor->RGBColor[0.5, 0, 0.5],
- CellChangeTimes->{3.740310138369109*^9},
- FontSize->12,
- FontColor->RGBColor[0, 0, 0],
- Background->RGBColor[0.88, 1, 0.88]]
+Cell[BoxData[
+ DynamicBox[ToBoxes[
+   Refresh[
+    StringJoin[
+     ToString[
+      N[MaxMemoryUsed[]/1000000, 6]], " MB Used ... "], UpdateInterval -> 
+    2.5], StandardForm],
+  ImageSizeCache->{167., {0., 10.}}]], "Output",
+ CellChangeTimes->{{3.740331547695018*^9, 3.740331561460504*^9}, {
+  3.740331592277104*^9, 3.7403316276324587`*^9}, {3.7403317037233973`*^9, 
+  3.740331704410595*^9}}]
 }, Open  ]],
 
 Cell[CellGroupData[{
 
 Cell[BoxData[
- RowBox[{"hp", "[", 
-  RowBox[{"5", ",", "2", ",", "18"}], "]"}]], "Input",
- CellChangeTimes->{{3.718990686664901*^9, 3.71899070749144*^9}, {
-  3.718990759985086*^9, 3.718990761384268*^9}}],
+ RowBox[{"<<", "Hamed.m"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.74033149951783*^9, 3.740331501523117*^9}}],
 
-Cell[BoxData["3"], "Output",
- CellChangeTimes->{{3.71899070061423*^9, 3.7189907080885353`*^9}, 
-   3.718990761787384*^9}]
+Cell["\<\
+PartitionsIntoParts` Package (2018.07.11-v2) Loaded!
+
+Loading the Package: 
+ \[RightTriangle] SetDirectory[\"/path/to/saved/HamedDotMFile\"]
+ \[RightTriangle] << Hamed.m
+
+Core Functions Provided by the Package: 
+ \[RightTriangle] HP[p, a, n], HamedPartitions[p, a, n];
+ \[RightTriangle] PrintPartitionStats[p, a, n]; RunUnitTests[] (if you so \
+please); etc.;
+
+Helpful References: 
+ \[RightTriangle] See HPPackageHelp[], HPPackageExamples[], and the package \
+maintainer's website at https://github.com/maxieds/PartitionsIntoParts for \
+more documentation.\
+\>", "Print",
+ CellFrame->2.5,
+ ShowCellBracket->False,
+ CellFrameMargins->14,
+ CellFrameColor->GrayLevel[0],
+ CellChangeTimes->{3.7403325298679256`*^9},
+ FontSize->14,
+ FontColor->RGBColor[0., 0.19999999999999996`, 0.],
+ Background->RGBColor[0.5, 1., 0.5]]
 }, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"HPPackageUsage", "[", "]"}]], "Input",
+ CellChangeTimes->{{3.740331868452482*^9, 3.74033186846523*^9}}],
+
+Cell["\<\
+Loading the Package: 
+ \[RightTriangle] SetDirectory[\"/path/to/saved/HamedDotMFile\"]
+ \[RightTriangle] << Hamed.m
+
+Core Functions Provided by the Package: 
+ \[RightTriangle] HP[p, a, n], HamedPartitions[p, a, n];
+ \[RightTriangle] PrintPartitionStats[p, a, n]; RunUnitTests[] (if you so \
+please); etc.;
+
+Helpful References: 
+ \[RightTriangle] See HPPackageHelp[], HPPackageExamples[], and the package \
+maintainer's website at https://github.com/maxieds/PartitionsIntoParts for \
+more documentation.\
+\>", "Print",
+ CellFrame->2.5,
+ ShowCellBracket->False,
+ CellFrameMargins->14,
+ CellFrameColor->GrayLevel[0],
+ CellChangeTimes->{3.740332536817637*^9},
+ FontSize->14,
+ FontColor->RGBColor[0.19999999999999996`, 0., 0.10799999999999998`],
+ Background->RGBColor[1., 0.5, 0.77]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"HPPackageExamples", "[", "]"}]], "Input",
+ CellChangeTimes->{{3.7403322842384567`*^9, 3.740332287050499*^9}}],
+
+Cell["\<\
+Examples of the Package in Use: 
+ \[RightTriangle] Please see the sample notebook at \
+https://github.com/maxieds/PartitionsIntoParts/blob/master/hameds-partition-\
+function.nb.
+\
+\>", "Print",
+ CellFrame->2.5,
+ ShowCellBracket->False,
+ CellFrameMargins->14,
+ CellFrameColor->GrayLevel[0],
+ CellChangeTimes->{3.740332544011814*^9},
+ FontSize->14,
+ FontColor->RGBColor[0., 0.19999999999999996`, 0.19999999999999996`],
+ Background->RGBColor[0.5, 1., 1.]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"?", "PartitionsIntoParts`*"}]], "Input",
+ CellChangeTimes->{{3.740326367079479*^9, 3.740326369683028*^9}, {
+  3.740332586969522*^9, 3.740332590003087*^9}}],
+
+Cell[BoxData[
+ DynamicModuleBox[{Typeset`open$$ = True}, 
+  PaneSelectorBox[{False->
+   RowBox[{
+    OpenerBox[Dynamic[Typeset`open$$],
+     ImageSize->Small], 
+    StyleBox["PartitionsIntoParts`", "InfoHeading"]}], True->GridBox[{
+     {
+      RowBox[{
+       OpenerBox[Dynamic[Typeset`open$$],
+        ImageSize->Small], 
+       StyleBox["PartitionsIntoParts`", "InfoHeading"]}]},
+     {GridBox[{
+        {
+         ButtonBox["a",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"a", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["errorText",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"errorText", "PartitionsIntoParts`"}},
+          
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["hpValue$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"hpValue$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["omegaOnes$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"omegaOnes$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["p$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"p$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["ADAPTIVE",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"ADAPTIVE", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["fullDescString",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "fullDescString", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["hp$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"hp$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["otf",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"otf", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["q",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"q", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["AdaptiveMethodThreshold",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "AdaptiveMethodThreshold", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["GENFUNC",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"GENFUNC", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["IdentifyHPInequality",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "IdentifyHPInequality", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["otf$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"otf$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["RunUnitTests",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "RunUnitTests", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["adaptiveThreshold",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "adaptiveThreshold", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["GetDatestamp",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "GetDatestamp", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["includeFormatting",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "includeFormatting", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["outputDesc",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"outputDesc", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["secondCountStatistic",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "secondCountStatistic", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["areEqual",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"areEqual", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["GetHPPackageUsageString",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "GetHPPackageUsageString", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["ineqDirStr",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"ineqDirStr", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["outputDesc$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "outputDesc$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["secondCountStatistic$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "secondCountStatistic$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["areEqual$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"areEqual$", "PartitionsIntoParts`"}},
+          
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["GetPartitionIndexParameter",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "GetPartitionIndexParameter", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["ineqDirStr$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "ineqDirStr$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["p",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"p", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["SetComputationMethod",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "SetComputationMethod", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["backgroundColor",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "backgroundColor", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["GetPartitionRankSum",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "GetPartitionRankSum", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["InequalityDirection",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "InequalityDirection", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["p0",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"p0", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["SETLENGTH",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"SETLENGTH", "PartitionsIntoParts`"}},
+          
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["baseColor",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"baseColor", "PartitionsIntoParts`"}},
+          
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["GetPartitionRankSumModuloBases",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "GetPartitionRankSumModuloBases", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["isConvex",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"isConvex", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["p0$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"p0$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["StanleysTheoremComponents",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "StanleysTheoremComponents", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["borderColor",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "borderColor", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["GetSinglePartitionStats",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "GetSinglePartitionStats", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["IsConvex",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"IsConvex", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["p1",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"p1", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["StanleysTheoremQ",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "StanleysTheoremQ", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["bulletMarker",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "bulletMarker", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["getUnitTestPassString",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "getUnitTestPassString", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["isConvex$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"isConvex$", "PartitionsIntoParts`"}},
+          
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["p1$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"p1$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["StartMemoryInUse",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "StartMemoryInUse", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["BulletPointMarker",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "BulletPointMarker", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["HamedPartitions",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "HamedPartitions", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["isEqual",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"isEqual", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["p2",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"p2", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["stcomps",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"stcomps", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["bulletPoints",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "bulletPoints", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["headerStr",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"headerStr", "PartitionsIntoParts`"}},
+          
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["lineFunc",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"lineFunc", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["p2$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"p2$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["stcomps$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"stcomps$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["cellText",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"cellText", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["headerString",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "headerString", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["lineFunc$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"lineFunc$", "PartitionsIntoParts`"}},
+          
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["packageAnnouncement",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "packageAnnouncement", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["summaryString",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "summaryString", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["cellText$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"cellText$", "PartitionsIntoParts`"}},
+          
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["headerString$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "headerString$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["listComps",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"listComps", "PartitionsIntoParts`"}},
+          
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["PackageSingleStringFromList",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "PackageSingleStringFromList", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["summaryString$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "summaryString$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["comp",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"comp", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["helpHeader",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"helpHeader", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["LocalPartitionsPackageName",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "LocalPartitionsPackageName", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["part",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"part", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["t",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"t", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["compMethod",
+          BaseStyle->"InformationLink",
+          ButtonData:>{
+           "Info183740318190-1692170", {"compMethod", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["helpHeader$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "helpHeader$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["m",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"m", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["PartitionCrank",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "PartitionCrank", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["test1Result",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "test1Result", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["COMPMETHOD",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"COMPMETHOD", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["helpStr",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"helpStr", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["MemoryInUseByPackage",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "MemoryInUseByPackage", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["PartitionMu",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "PartitionMu", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["test2Result",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "test2Result", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["COMPMETHODADAPTIVE",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "COMPMETHODADAPTIVE", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["helpStr$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"helpStr$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["muCount",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"muCount", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["PartitionOnes",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "PartitionOnes", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["test3Result",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "test3Result", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["COMPMETHODADAPTIVEUsage",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "COMPMETHODADAPTIVEUsage", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["hp",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"hp", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["muCount$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"muCount$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["PartitionRank",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "PartitionRank", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["testResultsDisplayString",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "testResultsDisplayString", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["COMPMETHODGENFUNC",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "COMPMETHODGENFUNC", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["HP",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"HP", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["n",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"n", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["partitionStats",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "partitionStats", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["testResultsInit",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "testResultsInit", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["COMPMETHODGENFUNCUsage",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "COMPMETHODGENFUNCUsage", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["HPByGF",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"HPByGF", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["NotebookDisplayColor",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "NotebookDisplayColor", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["partitionStats$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "partitionStats$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["textColor",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"textColor", "PartitionsIntoParts`"}},
+          
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["COMPMETHODSETLENGTH",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "COMPMETHODSETLENGTH", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["HPByGF2",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"HPByGF2", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["numberOfOnes",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "numberOfOnes", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["partsOfTheForm",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "partsOfTheForm", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["ttIneqLHS",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"ttIneqLHS", "PartitionsIntoParts`"}},
+          
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["COMPMETHODSETLENGTHUsage",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "COMPMETHODSETLENGTHUsage", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["HPByPartitions",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "HPByPartitions", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["numberOfOnes$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "numberOfOnes$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["partsOfTheForm$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "partsOfTheForm$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["ttIneqLHS$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"ttIneqLHS$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["constructListElementFunc",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "constructListElementFunc", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["HPPackageExamples",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "HPPackageExamples", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["numPrimes",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"numPrimes", "PartitionsIntoParts`"}},
+          
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["partSummarySpec",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "partSummarySpec", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["ttIneqRHS",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"ttIneqRHS", "PartitionsIntoParts`"}},
+          
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["constructListElementFunc$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "constructListElementFunc$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["HPPackageHelp",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "HPPackageHelp", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["nupper",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"nupper", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["partSummarySpec$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "partSummarySpec$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["ttIneqRHS$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"ttIneqRHS$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["countsOfParts",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "countsOfParts", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["HPPackageUsage",
+          BaseStyle->"InformationLink",
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "HPPackageUsage", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["ofTheFormFunc",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "ofTheFormFunc", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["PrintError",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"PrintError", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["usageDescList",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "usageDescList", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["countsOfParts$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "countsOfParts$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["hpParts",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"hpParts", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["ofTheFormFunc$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "ofTheFormFunc$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["PrintNotebookNotification",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "PrintNotebookNotification", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["usageDescList$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "usageDescList$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"]},
+        {
+         ButtonBox["ellLength",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"ellLength", "PartitionsIntoParts`"}},
+          
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["hpParts$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"hpParts$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["omega",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"omega", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["PrintNotebookNotificationDetailed",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "PrintNotebookNotificationDetailed", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], ""},
+        {
+         ButtonBox["ellLength$",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"ellLength$", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["hpValue",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"hpValue", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["omegaOnes",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {"omegaOnes", "PartitionsIntoParts`"}},
+          
+          ButtonNote->"PartitionsIntoParts`"], 
+         ButtonBox["PrintPartitionStats",
+          BaseStyle->"InformationLink",
+          
+          ButtonData:>{
+           "Info183740318190-1692170", {
+            "PrintPartitionStats", "PartitionsIntoParts`"}},
+          ButtonNote->"PartitionsIntoParts`"], ""}
+       },
+       DefaultBaseStyle->"InfoGrid",
+       GridBoxItemSize->{"Columns" -> {{
+            Scaled[0.19]}}}]}
+    },
+    GridBoxAlignment->{"Columns" -> {{Left}}, "Rows" -> {{Baseline}}}]}, 
+   Dynamic[Typeset`open$$],
+   ImageSize->Automatic]]], "Print", "InfoCell",
+ CellChangeTimes->{3.7403325906685753`*^9}]
+}, Closed]],
 
 Cell[CellGroupData[{
 
@@ -1484,7 +2581,7 @@ Cell[BoxData[
    TableForm[BoxForm`e$]]]], "Output",
  CellChangeTimes->{{3.718990955771537*^9, 3.718990968343224*^9}, 
    3.718991006583295*^9, {3.718991423946702*^9, 3.7189914268113947`*^9}}]
-}, Open  ]]
+}, Closed]]
 },
 WindowSize->{1594, 848},
 WindowMargins->{{3, Automatic}, {3, 25}},
@@ -1503,17 +2600,31 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[580, 22, 121, 2, 32, "Input"],
-Cell[704, 26, 266, 7, 53, "Print"]
+Cell[580, 22, 517, 14, 50, "Input",
+ InitializationCell->True],
+Cell[1100, 38, 394, 10, 32, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[1007, 38, 203, 4, 34, "Input"],
-Cell[1213, 44, 121, 2, 32, "Output"]
+Cell[1531, 53, 143, 3, 48, "Input",
+ InitializationCell->True],
+Cell[1677, 58, 825, 24, 271, "Print"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[1371, 51, 641, 16, 34, "Input"],
-Cell[2015, 69, 50037, 1416, 677, "Output"]
-}, Open  ]]
+Cell[2539, 87, 127, 2, 32, "Input"],
+Cell[2669, 91, 788, 22, 233, "Print"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3494, 118, 133, 2, 32, "Input"],
+Cell[3630, 122, 462, 14, 97, "Print"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4129, 141, 179, 3, 32, "Input"],
+Cell[4311, 146, 36512, 997, 726, "Print"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[40860, 1148, 641, 16, 28, "Input"],
+Cell[41504, 1166, 50037, 1416, 677, "Output"]
+}, Closed]]
 }
 ]
 *)
