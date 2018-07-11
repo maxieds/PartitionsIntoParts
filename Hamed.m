@@ -1,37 +1,39 @@
 
 (*************************************************************************)
 (*************************************************************************)
-(**** : HamedPartitions.m:                            ********************)
+(**** : Hamed.m:                                      ********************)
 (**** : Author:  Maxie D. Schmidt (maxieds@gmail.com) ********************)
 (**** : Created: 07.11.2018                           ********************) 
 (*************************************************************************)
 (*************************************************************************)
 
+(**** : Clear out any old definitions and stored data on reload: ****) 
+Unprotect[PartitionsIntoParts`HP, PartitionsIntoParts`HamedPartitions];
+ClearAll["PartitionsIntoParts`*"];
+
 LocalPartitionsPackageName = "PartitionsIntoParts`";
 BeginPackage[LocalPartitionsPackageName, {"Combinatorica`"}]
 
-(**** : Clear out any old definitions and stored data on reload: ****)
-Clear[HPByPartitions, HPByGF, HP, SetComputationMethod, HamedPartitions, PartitionRank];
-Clear[GetPartitionT, IdentifyHPInequality, CheckHPDiff, TestHPDiff, PrintHP]; 
+StartMemoryInUse = Once[MemoryInUse[]];
 
 (***************************************************************************)
 (**** : Package configuration for the core functionality offered here : ****) 
 (***************************************************************************)
 
-COMPMETHOD_SETLENGTH::usage = "Named constant to denote that the partition function HP should be computed by set length " <> 
+COMPMETHODSETLENGTHUsage = "Named constant to denote that the partition function HP should be computed by set length " <> 
                               "using Partitions and the Combinatorica package. This method may not scale well " <> 
                               "when n is large due to the amount of memory required to store a large array of lists.\n" <>
                               "See also COMPMETHOD_GENFUNC, COMPMETHOD_ADAPTIVE, and SetComputationMethod[...].";
-COMPMETHOD_SETLENGTH = 0;
+COMPMETHODSETLENGTH = 0;
 
-COMPMETHOD_GENFUNC::usage = "Named constant to denote that the partition function HP should be computed by taking " <> 
+COMPMETHODGENFUNCUsage = "Named constant to denote that the partition function HP should be computed by taking " <> 
                             "coefficients of the truncated (to order n) reciprocal product generating function for " <> 
                             "HP_{p,a}(n). This method should in principle be more efficient than the related " <> 
                             "COMPMETHOD_SETLENGTH method in the package..\n" <>
                             "See also COMPMETHOD_SETLENGTH, COMPMETHOD_ADAPTIVE, and SetComputationMethod[...].";
-COMPMETHOD_GENFUNC = 1;
+COMPMETHODGENFUNC = 1;
 
-COMPMETHOD_ADAPTIVE::usage = "A hybrid of the two methods COMPMETHOD_SETLENGTH and COMPMETHOD_GENFUNC which " <> 
+COMPMETHODADAPTIVEUsage = "A hybrid of the two methods COMPMETHOD_SETLENGTH and COMPMETHOD_GENFUNC which " <> 
                              "prefers the latter method when n is large-ish, say (by informal heuristic only) " <> 
                              "n \[RightTriangleEqual] 25 to be safe. This parameter can be fine tuned later.\n" <> 
                              "See also SetComputationMethod[...] and the other COMPMETHOD_* named constants above. " <> 
@@ -40,19 +42,23 @@ COMPMETHOD_ADAPTIVE::usage = "A hybrid of the two methods COMPMETHOD_SETLENGTH a
 COMPMETHOD_ADAPTIVE = 4;
 
 Begin["`Private`"];
-     PartitionFunctionComputationMethod = COMPMETHOD_ADAPTIVE;
+     PartitionFunctionComputationMethod = COMPMETHODADAPTIVE;
      AdaptiveMethodThreshold = 25;
 End[];
 
 SetComputationMethod::usage = "Default settings are SetComputationMethod[COMPMETHOD_ADAPTIVE, 25]. See the " <> 
-                              "COMPMETHOD_* named constants usage for additional possibilities.";
+                              "COMPMETHOD_* named constants usage below for additional possibilities.\n\n" <> 
+                              "COMPMETHOD_SETLENGTH: " <> ToString[COMPMETHODSETLENGTHUsage] <> "\n\n" <> 
+                              "COMPMETHOD_GENFUNC: " <> ToString[COMPMETHODGENFUNCUsage] <> "\n\n" <> 
+                              "COMPMETHOD_ADAPTIVE: " <> ToString[COMPMETHODADAPTIVEUsage] <> "\n\n";
 SetComputationMethod[compMethod_, adaptiveThreshold_:25] := Block[{}, 
-     If[!MemberQ[{COMPMETHOD_SETLENGTH, COMPMETHOD_GENFUNC, COMPMETHOD_ADAPTIVE}, compMethod] || adaptiveThreshold <= 0, 
+     If[!MemberQ[{COMPMETHODSETLENGTH, COMPMETHODGENFUNC, COMPMETHODADAPTIVE}, compMethod] || adaptiveThreshold <= 0, 
           PrintError["Invalid parameters. See ?SetComputationMethod for usage instructions."];
           Return[-1];
      ];
      Private`PartitionFunctionComputationMethod = compMethod;
      Private`AdaptiveMethodThreshold = adaptiveThreshold;
+     Update[HP];
      Return[compMethod];
 ];
 
@@ -65,7 +71,7 @@ SetComputationMethod[compMethod_, adaptiveThreshold_:25] := Block[{},
 (**** : Turan-type inequalities and sums of the rank statistic are    : ****)
 (**** : implelemented below.                                          : ****)
 (***************************************************************************)
-HP::usage = "Hamed's special partition function: \n" <> "
+HP::usage = "Hamed's special partition function: \n" <> 
             "Computes the number of partitions of n of the form pt+a for fixed primes p and " <> 
             "0 \[LeftTriangleEqual] a < p. The computation method of these integer counts can be changed " <> 
             "to affect the performance speed of the calculations using the function " <> 
@@ -94,8 +100,7 @@ HPByPartitions::usage = "Same as HP[p, a, n] computed with Combinatorica's Parti
                         "*deprecated* in place of HPByGF[p, a, n] for large-ish n unless the user truely needs to " <> 
                         "recover said more detailed structure of the underlying partitions for later analysis.";
 HPByPartitions[p_, a_, n_] := HPByPartitions[p, a, n] = 
-     Return[Length[HamedPartitions[p, a, n]]];
-];
+     Length[HamedPartitions[p, a, n]];
 
 HPByGF::usage = "Same as HP[p, a, n] computed by means of a q-Pochhammer product generating function.";
 HPByGF[p_, a_, n_] := HPByGF[p, a, n] = 
@@ -155,7 +160,15 @@ CheckTableValid[tableInput_] := SameQ[Union[Flatten[tableInput]], {True}];
 
 TestHPDiff::usage = UnitTestingFeaturesUsage;
 TestHPDiff[numPrimes_:15, nupper_:50] := 
-     CheckTableValid[Table[CheckHPDiff[p, a, n], {p, Table[Prime[m], {m, 1, numPrimes}, {a, 0, p - 1}, {n, 1, nupper}]];
+     CheckTableValid[Table[CheckHPDiff[p, a, n], {p, Table[Prime[m], {m, 1, numPrimes}]}, {a, 0, p - 1}, {n, 1, nupper}]];
+     
+TestHPDiff2::usage = UnitTestingFeaturesUsage;
+TestHPDiff2[numPrimes_:15, nupper_:50] := 
+     CheckTableValid[Table[CheckHPDiff2[p, n], {p, Table[Prime[m], {m, 1, numPrimes}]}, {n, 1, nupper}]];
+     
+TestHPDiff3::usage = UnitTestingFeaturesUsage;
+TestHPDiff3[numPrimes_:15, nupper_:50] := 
+     CheckTableValid[Table[CheckHPDiff3[p, n], {p, Table[Prime[m], {m, 1, numPrimes}]}, {n, 1, nupper}]];
 
 End[]; (* End Testing Section *)
 
@@ -205,7 +218,7 @@ Module[{partitionStats, partSummarySpec, outputDesc},
      partitionStats = {p, GetPartitionIndexParameter[#], a, Plus @@ #, 
                        PartitionRank[#], PartitionCrank[#], Min[#], Max[#], 
                        PartitionOnes[#], PartitionMu[#]}&[part];
-     partSummarySpec = "\[Lambda] = `1`\[FilledVerySmallCircle]`2`+`3` \[LeftGuillmet] `4`; " <> 
+     partSummarySpec = "\[Lambda] = `1`\[FilledSmallCircle]`2`+`3` \[LeftGuillemet] `4`; " <> 
                        "rank=`5`, crank=`6`, spart=`7`, lpart=`8`, ones=`9`, \[Mu](\[Lambda])=`10`";
      outputDesc = ToString[StringForm[partSummarySpec, ##]]& @@ partitionStats;
      If[includeFormatting, 
@@ -274,16 +287,48 @@ IdentifyHPInequality[p_, a_, n_] := Module[{p2, p1, p0, ttIneqLHS, ttIneqRHS, is
                   ];
      Return[{IsConvex -> isConvex, InequalityDirection -> ineqDirStr}];
 ];
-                  
 
+(*************************************************************************)
+(**** : A possible generalization of Stanley's theorem?             : ****)
+(**** : For exploring Maxie's new suggestion that it may be         : ****)
+(**** : reasonable or directly possible to form a generalized       : ****)
+(**** : analog to Stanley's theorem which interprets the count      : ****)
+(**** : statistic of the number of ones in all partitions of n      : ****)
+(**** : into our specified special forms.                           : ****)
+(*************************************************************************)
+
+StanleysTheoremComponents::usage = "Computes (a) the number of all ones in all the partitions returned by " <> 
+                                   "HamedPartitions[p, a, n]; and (b) Attempts to correlate this to the " <> 
+                                   "second count in Stanley's theorem: namely, the sums of numbers of parts in " <> 
+                                   "all such partitions. We seek to determine how (if at all) these components " <> 
+                                   "are related in this new setting of (pt+a)-formed partitions of n.";
+StanleysTheoremComponents[p_, a_, n_] := StanleysTheoremComponents[p, a, n] = 
+Module[{hpParts, numberOfOnes, countsOfParts, secondCountStatistic}, 
+     hpParts = HamedPartitions[p, a, n];
+     numberOfOnes = Plus @@ Map[PartitionOnes, hpParts];
+     countsOfParts = Map[Length, hpParts];
+     secondCountStatistic = Plus @@ countsOfParts;
+     Return[{numberOfOnes, secondCountStatistic, countsOfParts}];
+];
+
+StanleysTheoremQ::usage = "Boolean-valued indicator of whether Stanley's theorem (applied directly) is also " <> 
+                          "true for these parameter values of (p, a; n).\n" <> 
+                          "See also StanleysTheoremComponents[p, a, n].";
+StanleysTheoremQ[p_, a_, n_] := With[{stcomps = StanleysTheoremComponents[p, a, n]}, 
+     stcomps[[1]] == stcomps[[2]]
+];
 
 (*************************************************************************)
 (**** : Text processing, display and general utility functions      : ****) 
 (*************************************************************************)
 
-PrintNotebookNotification[textColor_, backgroundColor_, borderColor_] := 
-If[$Notebooks,
-     CellPrint[Cell[packageAnnouncement, "Print", 
+GetDatestamp[] := ToString[StringForm["`1`/`2`/`3` : `4`:`5`:`6`", ##]] @@ 
+     Map[DateValue, {"Month", "Day", "Year", "Hour", "Minute", "Second"}]
+
+PrintNotebookNotificationDetailed[textColor_, backgroundColor_, borderColor_] := 
+Function[cellText, 
+     If[$Notebooks,
+     CellPrint[Cell[cellText, "Print", 
                     FontColor -> textColor, 
                     FontSize -> 14, 
                     CellFrame -> 2.5, 
@@ -293,20 +338,74 @@ If[$Notebooks,
                     ShowCellBracket -> False
                    ]
               ],
-     Print[#1]; 
+     Print[cellText]; 
+    ]
 ];
 
-PrintNotebookNotification[baseColor_] := 
-     PrintNotebookNotification[Darker[baseColor], Lighter[baseColor], Glow[baseColor]];
+PrintNotebookNotification[baseColor_:Green] := 
+     PrintNotebookNotificationDetailed[Darker[baseColor], Lighter[baseColor], Glow[baseColor]];
 
 PrintError[errorText_] := 
-     PrintNotebookNotification @@ StringJoin["\[ScriptX]\n", " !!! ERROR : >>> \n", errorText, "\n\[ScriptX]"]
+     PrintNotebookNotification @@ {StringJoin["\[ScriptX]\n", " !!! ERROR : >>> @ ", 
+                                             GetDatestamp[], "\n", errorText, "\n\[ScriptX]"]}
 
 (*************************************************************************)
 (**** : Package help and information printing routines              : ****) 
-(*************************************************************************)
+(*************************************************************************) 
+
+MemoryInUseByPackage::usage = "Returns how much memory (in bytes) the package is storing with respect to " <> 
+                              "its cached dynamic-programming-like function return values.";
+MemoryInUseByPackage[] := MemoryInUse[LocalPartitionsPackageName] - StartMemoryInUse;
 
 
+PackageSingleStringFromList[headerStr_, listComps_, bulletMarker_:"\[RightTriangle]"] := 
+Module[{constructListElementFunc}, 
+     constructListElementFunc = (" " <> bulletMarker <> " " <> ToString[#] <> "\n")&;
+     Return[headerStr <> "\n" <> StringJoin @@ Map[constructListElementFunc, listComps]];
+];
+
+Options[GetHPPackageUsageString] = {BulletPointMarker -> "\[RightTriangle]"};
+GetHPPackageUsageString[] := GetHPPackageUsageString[] = Module[{lineFunc, usageDescList}, 
+     lineFunc = ToString[ToString[" "] <> ToString[BulletPointMarker] <> " " <> ToString[#]]&;
+     usageDescList = {"Loading the Package: \n", 
+                      lineFunc["SetDirectory[\"/path/to/saved/HamedDotMFile\"]\n"], 
+                      lineFunc["<<Hamed.m\n\n"], 
+                      "Core Functions Provided by the Package: \n", 
+                      lineFunc["HP[p, a, n], HamedPartitions[p, a, n];\n"], 
+                      lineFunc["PrintPartitionStats[p, a, n]; RunUnitTests[] (if you so please); etc.;\n\n"], 
+                      "Helpful References: \n", 
+                      lineFunc["See HPPackageHelp[], HPPackageExamples[], and the package maintainer's website at " <> 
+                      "https://github.com/maxieds/PartitionsIntoParts for more documentation."]
+     };
+     Return[StringJoin @@ usageDescList];
+];
+
+Options[HPPackageExamples] = {NotebookDisplayColor -> RGBColor[1.0, 0.0, 0.54]};
+HPPackageUsage[] := HPPackageUsage[] = PrintNotebookNotification[NotebookDisplayColor] @@ 
+     {GetHPPackageUsageString[]};
+
+Options[HPPackageExamples] = {NotebookDisplayColor -> Yellow};
+HPPackageHelp[] := HPPackageHelp[] = Module[{helpHeader, helpStr}, 
+     helpHeader = "Helful Information About the Package: ";
+     helpStr = "You are fortunate in using this package in so much as its authors have decorated the " <> 
+               "core functions you will be using with Fn::usage package strings. This means that " <> 
+               "helpful documentation for a particular constant or package feature can be accessed by " <> 
+               "running ?ConstantOrFunctionName in your working notebook. If you are unsure where to " <> 
+               "start, or just want a detailed list of what exactly we have implemented here, you can " <> 
+               "evaluate the following in your notebook with the package loaded " <> 
+               "?" <> LocalPartitionsPackageName <> "`* ... " <> 
+               "Alternatively, we have added the separate helper functions " <> 
+               "HPPackageUsage[] and HPPackageExamples[] for you to use and explore. Enjoy!";
+    PrintNotebookNotification[NotebookDisplayColor] @@ {helpHeader <> "\n\n" <> helpStr};
+];             
+
+Options[HPPackageExamples] = {NotebookDisplayColor -> Green};
+HPPackageExamples[] := HPPackageExamples[] = 
+     PrintNotebookNotification[NotebookDisplayColor] @@ 
+     List[PackageSingleStringFromList["Examples of the Package in Use: ", {
+     "Please see the sample notebook at " <> 
+     "https://github.com/maxieds/PartitionsIntoParts/blob/master/hameds-partition-function.nb."
+     }]];
 
 (*************************************************************************)
 (**** : Perform pretty printing of the package details and          : ****) 
@@ -314,9 +413,10 @@ PrintError[errorText_] :=
 (*************************************************************************)
 
 (** Local package loaded announcement: **)
-packageAnnouncement = "Hamed.m Package (2018.07.11-v2) Loaded ... \n\n";
-packageUsage = "Examples:\n" <> Map[StringJoin["\[RightTriangle] ", #1, "\n"]&, GetPackageUsage[]];
-PrintNotebookNotification @@ {packageAnnouncementStrs <> packageUsage}
+packageAnnouncement = ToString[LocalPartitionsPackageName] <> " Package (2018.07.11-v2) Loaded!\n\n";
+PrintNotebookNotification @@ {packageAnnouncement <> GetHPPackageUsageString[]}
+
+Protect[PartitionsIntoParts`HP, PartitionsIntoParts`HamedPartitions]
 
 EndPackage[]
 
