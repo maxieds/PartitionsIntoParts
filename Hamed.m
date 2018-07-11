@@ -249,7 +249,7 @@ GetPartitionRankSum[p_, a_, n_] := GetPartitionRankSum[p, a, n] =
      
 GetPartitionRankSumModuloBases::usage = "Computes all relevant primes p for which HP[p, a, n] === 0 (mod p), i.e., " <> 
                                         "all such primes in the range 2 <= p <= HP[p, a, n].";
-GetPartitionRankSumModuloBases[p_, a_, n_] := With[{hp = HP[p, a, n]}, 
+GetPartitionRankSumModuloBases[p_, a_, n_] := With[{hp = GetPartitionRankSum[p, a, n]}, 
      Map[First, Select[Table[{p, Mod[hp, p, 0] == 0}, {p, Table[Prime[m], {m, 1, hp}]}], #[[1]] <= hp && #[[2]]&]];
 ];
 
@@ -282,7 +282,7 @@ IdentifyHPInequality[p_, a_, n_] := Module[{p2, p1, p0, ttIneqLHS, ttIneqRHS, is
                              isConvex, "\[RightTriangleEqual]", 
                              True, "\[NotRightTriangleEqual]"], ttIneqRHS]
                   ];
-     Return[{IsConvex -> isConvex, InequalityDirection -> ineqDirStr}];
+     Return[{isConvex, ineqDirStr}];
 ];
 
 (*************************************************************************)
