@@ -8,7 +8,7 @@
 (*************************************************************************)
 
 (**** : Clear out any old definitions and stored data on reload: ****) 
-Unprotect[PartitionsIntoParts`HP, PartitionsIntoParts`HamedPartitions];
+
 ClearAll["PartitionsIntoParts`*"];
 
 LocalPartitionsPackageName = "PartitionsIntoParts`";
@@ -39,12 +39,10 @@ COMPMETHODADAPTIVEUsage = "A hybrid of the two methods COMPMETHOD_SETLENGTH and 
                              "See also SetComputationMethod[...] and the other COMPMETHOD_* named constants above. " <> 
                              "To set the threshold of n values between which we distinguish the particular " <> 
                              "computation method to use, see the local package variable AdaptiveMethodThreshold.";
-COMPMETHOD_ADAPTIVE = 4;
+COMPMETHODADAPTIVE = 4;
 
-Begin["`Private`"];
-     PartitionFunctionComputationMethod = COMPMETHODADAPTIVE;
-     AdaptiveMethodThreshold = 25;
-End[];
+PartitionFunctionComputationMethod = COMPMETHODADAPTIVE;
+AdaptiveMethodThreshold = 25;
 
 SetComputationMethod::usage = "Default settings are SetComputationMethod[COMPMETHOD_ADAPTIVE, 25]. See the " <> 
                               "COMPMETHOD_* named constants usage below for additional possibilities.\n\n" <> 
@@ -56,8 +54,8 @@ SetComputationMethod[compMethod_, adaptiveThreshold_:25] := Block[{},
           PrintError["Invalid parameters. See ?SetComputationMethod for usage instructions."];
           Return[-1];
      ];
-     Private`PartitionFunctionComputationMethod = compMethod;
-     Private`AdaptiveMethodThreshold = adaptiveThreshold;
+     PartitionFunctionComputationMethod = compMethod;
+     AdaptiveMethodThreshold = adaptiveThreshold;
      Update[HP];
      Return[compMethod];
 ];
@@ -79,9 +77,9 @@ HP::usage = "Hamed's special partition function: \n" <>
             "See also HPByPartitions and HPByGF.";
 HP[p_, a_, n_] := HP[p, a, n] = Module[{hpValue}, 
      hpValue = 
-     Which[Private`PartitionFunctionComputationMethod == COMPMETHOD_SETLENGTH, HPByPartitions[p, a, n], 
-           Private`PartitionFunctionComputationMethod == COMPMETHOD_GENFUNC, HPByGF[p, a, n], 
-           Private`PartitionFunctionComputationMethod == COMPMETHOD_ADAPTIVE 
+     Which[PartitionFunctionComputationMethod == COMPMETHODSETLENGTH, HPByPartitions[p, a, n], 
+           PartitionFunctionComputationMethod == COMPMETHODGENFUNC, HPByGF[p, a, n], 
+           PartitionFunctionComputationMethod == COMPMETHODADAPTIVE 
            && n >= AdaptiveMethodThreshold, HPByGF[p, a, n], 
            True, HPByPartitions[p, a, n]];
      Return[hpValue];
@@ -102,17 +100,13 @@ HPByPartitions::usage = "Same as HP[p, a, n] computed with Combinatorica's Parti
 HPByPartitions[p_, a_, n_] := HPByPartitions[p, a, n] = 
      Length[HamedPartitions[p, a, n]];
 
-HPByGF::usage = "Same as HP[p, a, n] computed by means of a q-Pochhammer product generating function.";
-HPByGF[p_, a_, n_] := HPByGF[p, a, n] = 
-     SeriesCoefficient[Power[q, a] * QPochhammer[Power[q, a], Power[q, p]], {q, 0, n}];
-
-HPByGF2::usage = "Same as HP[p, a, n] computed by means of a truncated reciprocal product generating function. " <> 
+HPByGF::usage = "Same as HP[p, a, n] computed by means of a truncated reciprocal product generating function. " <> 
                  "It is not clear whether this is more efficient than HPByGF[p, a, n], but I suspect that the " <> 
                  "former function is probably less error prone since it uses the built-in Mathematica routine for the " <> 
                  "full infinite q-Pochhamer symbol. At any rate, this generating function method is also implemented " <> 
                  "here for testing, verification, and comparison.";
-HPByGF2[p_, a_, n_] := HPByGF2[p, a, n] = 
-     SeriesCoefficient[1 / Product[1 - Power[q, p * t + a], {t, 0, n + 1}], {q, 0, n}]
+HPByGF[p_, a_, n_] := HPByGF2[p, a, n] = 
+     SeriesCoefficient[1 / Product[1 - Power[q, p * t + a], {t, If[a != 0, 0, 1], n + 1}], {q, 0, n}]
 
 HamedPartitions::usage = "Returns the actual components of the partitions of said form as a list of lists. " <> 
                          "This function is essentially the analog to Partitions[n] from Combinatorica, " <> 
@@ -129,16 +123,15 @@ HamedPartitions::usage = "Returns the actual components of the partitions of sai
                          "(** OR ALTERNATELY: **)\n" <>
                          "(2) SetComputationMethod[COMPMETHOD_ADAPTIVE, Infinity].";
 HamedPartitions[p_, a_, n_] := HamedPartitions[p, a, n] = 
-     Module[{otf, ofTheFormFunc, partsOfTheForm}, 
-     otf = IntegerQ[(# - a) / p]&; 
-     ofTheFormFunc = Union[Map[otf, #]]&; 
+     Module[{otf, ofTheFormFunc, partsOfTheForm, partitionIsGoodQ}, 
+     otf = {#, IntegerQ[(# - a) / p]}&; 
+     ofTheFormFunc = Map[otf, #]&; 
      partsOfTheForm = Map[ofTheFormFunc, Partitions[n]];
-     partsOfTheForm = Select[partsOfTheForm, #=={True}&];
-     Return[partsOfTheForm];
+     partitionIsGoodQ[part_] := Union[Map[#1[[2]]&, part]] === {True};
+     goodPartsList = Select[Map[{Map[First, #1], partitionIsGoodQ[#1]}&, partsOfTheForm], #[[2]] === True&];
+     Return[Map[First, goodPartsList]];
 
 ];
-
-Begin["`Testing`"];
 
 UnitTestingFeaturesUsage = "Used for internal testing, verification, and what we will loosely call our " <> 
                            "first-order approximation to Unit Tests in Mathematica. " <> 
@@ -148,13 +141,13 @@ UnitTestingFeaturesUsage = "Used for internal testing, verification, and what we
                            "that this package is minimally computing what we expect it to compute instead.";
 
 CheckHPDiff::usage = UnitTestingFeaturesUsage;
-CheckHPDiff[p_, a_, n_] := HPByPartitions[p, a, n] == HPByGF[p, a, n] && HPByPartitions[p, a, n] == HPByGF2[p, a, n]
+CheckHPDiff[p_, a_, n_] := HPByPartitions[p, a, n] == HPByGF[p, a, n]
 
 CheckHPDiff2::usage = UnitTestingFeaturesUsage;
-CheckHPDiff2[p_, n_] := Sum[HP[p, a, n], {a, 0, p - 1}] == PartitionsP[n]
+CheckHPDiff2[p_, n_] := HP[1, 0, n] == PartitionsP[n]
 
 CheckHPDiff3::usage = UnitTestingFeaturesUsage;
-CheckHPDiff3[p_, n_] := Sum[HP[p, a, n], {a, 1, p - 1}, 2] == PartitionsQ[n]
+CheckHPDiff3[p_, n_] := HP[2, 1, n] == PartitionsQ[n]
 
 CheckTableValid[tableInput_] := SameQ[Union[Flatten[tableInput]], {True}];
 
@@ -170,24 +163,26 @@ TestHPDiff3::usage = UnitTestingFeaturesUsage;
 TestHPDiff3[numPrimes_:15, nupper_:50] := 
      CheckTableValid[Table[CheckHPDiff3[p, n], {p, Table[Prime[m], {m, 1, numPrimes}]}, {n, 1, nupper}]];
 
-End[]; (* End Testing Section *)
-
 RunUnitTests::usage = "A basic internal package sanity check on the correctness of the core functions " <> 
                       "which we have coded / implemented above. This is the pretty-print notebook wrapper " <> 
                       "around all of the numbered functions in the `Testing` subpackage. This is the " <> 
                       "high-level function you want to call to verify that the package is configured " <> 
                       "properly and generating at least minimally correct results.";
-RunUnitTests[numPrimes_:15, nupper_:50] := Module[{}, 
+RunUnitTests[numPrimes_:15, nupper_:50] := 
+Module[{checkOrXFunc, getUnitTestPassString, test1Result, test2Result, test3Result, testResultsInit, bulletPoints}, 
+     checkOrXFunc[boolean_] := Which[boolean, "\[Checkmark] (PASSED)", !boolean, "\[ScriptX] (FAILED)"];
+     getUnitTestPassString[timingData_] := ToString[StringForm["`1` and run in `2` seconds\n", 
+                                                               checkOrXFunc[Last[timingData]], First[timingData]]];
      test1Result = "[Test 1] Verifying HP[p, a, n] values match across all computation methods: " <> 
-                   getUnitTestPassString[Testing`TestHPDiff[numPrimes, nupper]];
-     test2Result = "[Test 2] Verifying HP[p, a, n] values against known functions (sum over all a yields p(n)): " <> 
-                   getUnitTestPassString[Testing`TestHPDiff2[numPrimes, nupper]];
-     test3Result = "[Test 2] Verifying HP[p, a, n] values against known functions (sum over all odd a yields q(n)): " <> 
-                   getUnitTestPassString[Testing`TestHPDiff3[numPrimes, nupper]];
+                   getUnitTestPassString[Timing[TestHPDiff[numPrimes, nupper]]];
+     test2Result = "[Test 2] Verifying HP[p, a, n] values against known functions p(n): " <> 
+                   getUnitTestPassString[Timing[TestHPDiff2[numPrimes, nupper]]];
+     test3Result = "[Test 3] Verifying HP[p, a, n] values against known functions q(n): " <> 
+                   getUnitTestPassString[Timing[TestHPDiff3[numPrimes, nupper]]];
      testResultsInit = {test1Result, test2Result, test3Result};
      bulletPoints = {"\[ClubSuit]", "\[SpadeSuit]", "\[BlackQueen]"};
-     testResultsDisplayString = MapIndexed[StringJoin[bulletPoints[[First[#1]]], #1]&, testResultsInit];
-     PrintNotebookNotification[Blend[Red, Yellow]] @@ {testResultsDisplayString};
+     testResultsDisplayString = StringJoin @@ MapIndexed[StringJoin[bulletPoints[[ First[#2] ]], #1]&, testResultsInit];
+     PrintNotebookNotification[Orange][testResultsDisplayString];
 ];
 
 (***************************************************************************)
@@ -207,34 +202,36 @@ PartitionMu[part_] := Length[Select[part, # > PartitionOnes[part]&]];
 
 PartitionCrank::usage = "Standard summary statistic for an individual partition introduced by Freeman Dyson.";
 PartitionCrank[part_] := With[{ellLength = Max[part], omegaOnes = PartitionOnes[part], muCount = PartitionMu[part]}, 
-     If[omega == 0, ellLength, muCount - omegaOnes]
+     If[omegaOnes == 0, ellLength, muCount - omegaOnes]
 ]
 
 GetPartitionIndexParameter::usage = "The parameter t if the component represents pt+a.";
 GetPartitionIndexParameter[p_, a_, comp_] := (comp - a) / p;
 
 GetSinglePartitionStats[p_, a_, part_, includeFormatting_:True] := 
-Module[{partitionStats, partSummarySpec, outputDesc}, 
-     partitionStats = {p, GetPartitionIndexParameter[#], a, Plus @@ #, 
+Module[{partitionStats, partSummarySpec, outputDesc, getPartitionIndexParameters},
+     getPartitionIndexParameters := StringJoin @@ Map[ToString[StringForm["`1`\[FilledSmallCircle]`2`+`3`; ", 
+                                                                                 p, GetPartitionIndexParameter[p, a, #1], a]]&, part];
+     partitionStats = {getPartitionIndexParameters, Plus @@ #, 
                        PartitionRank[#], PartitionCrank[#], Min[#], Max[#], 
                        PartitionOnes[#], PartitionMu[#]}&[part];
-     partSummarySpec = "\[Lambda] = `1`\[FilledSmallCircle]`2`+`3` \[LeftGuillemet] `4`; " <> 
-                       "rank=`5`, crank=`6`, spart=`7`, lpart=`8`, ones=`9`, \[Mu](\[Lambda])=`10`";
+     partSummarySpec = "\[Lambda] = `1` \[RightGuillemet] `2` ;;;" <> 
+                       "rank=`3`, crank=`4`, spart=`5`, lpart=`6`, ones=`7`, \[Mu](\[Lambda])=`8`";
      outputDesc = ToString[StringForm[partSummarySpec, ##]]& @@ partitionStats;
      If[includeFormatting, 
           outputDesc = " \[FivePointedStar] " <> outputDesc <> "\n";
      ];
-     Return[outputDesc];
+     Return[ToString[outputDesc]];
 ];
 
 PrintPartitionStats[p_, a_, n_] := Module[{headerString, summaryString}, 
      headerString = ToString[StringForm["Partitions of n = `1` into parts of the form `2`t+`3`:\n\n", n, p, a]];
      headerString = headerString <> 
-                    ToString[StringForm["HP(p=`1`, a=`2`; n=`3`) = `4`", p, a, n, HPByPartitions[p, a, n]]];
+                    ToString[StringForm["HP(p=`1`, a=`2`; n=`3`) = `4`\n", p, a, n, HPByPartitions[p, a, n]]];
      headerString = headerString <> 
                     ToString[StringForm["For reference: p(`1`)=`2`, q(`1`)=`3`.\n", n, PartitionsP[n], PartitionsQ[n]]];
      headerString = headerString <> "\n==========================================================================\n\n";
-     summaryString = StringJoin @@ Map[GetSinglePartitionStats, HamedPartitions[p, a, n]];
+     summaryString = StringJoin @@ Map[GetSinglePartitionStats[p, a, #1]&, HamedPartitions[p, a, n]];
      fullDescString = headerString <> summaryString;
      PrintNotebookNotification[RGBColor[0.27, 0.71, 1.0]] @@ {fullDescString};
 ]; 
@@ -410,8 +407,6 @@ HPPackageExamples[OptionsPattern[]] :=
 (** Local package loaded announcement: **)
 packageAnnouncement = ToString[LocalPartitionsPackageName] <> " Package (2018.07.11-v2) Loaded!\n\n";
 PrintNotebookNotification[][packageAnnouncement <> GetHPPackageUsageString[]]
-
-Protect[PartitionsIntoParts`HP, PartitionsIntoParts`HamedPartitions]
 
 EndPackage[]
 
