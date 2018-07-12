@@ -8,7 +8,6 @@
 (*************************************************************************)
 
 (**** : Clear out any old definitions and stored data on reload: ****) 
-
 ClearAll["PartitionsIntoParts`*"];
 
 LocalPartitionsPackageName = "PartitionsIntoParts`";
@@ -23,14 +22,14 @@ StartMemoryInUse = Once[MemoryInUse[]];
 COMPMETHODSETLENGTHUsage = "Named constant to denote that the partition function HP should be computed by set length " <> 
                               "using Partitions and the Combinatorica package. This method may not scale well " <> 
                               "when n is large due to the amount of memory required to store a large array of lists.\n" <>
-                              "See also COMPMETHOD_GENFUNC, COMPMETHOD_ADAPTIVE, and SetComputationMethod[...].";
+                              "See also COMPMETHODGENFUNC, COMPMETHODADAPTIVE, and SetComputationMethod[...].";
 COMPMETHODSETLENGTH = 0;
 
 COMPMETHODGENFUNCUsage = "Named constant to denote that the partition function HP should be computed by taking " <> 
                             "coefficients of the truncated (to order n) reciprocal product generating function for " <> 
                             "HP_{p,a}(n). This method should in principle be more efficient than the related " <> 
                             "COMPMETHOD_SETLENGTH method in the package..\n" <>
-                            "See also COMPMETHOD_SETLENGTH, COMPMETHOD_ADAPTIVE, and SetComputationMethod[...].";
+                            "See also COMPMETHODSETLENGTH, COMPMETHODADAPTIVE, and SetComputationMethod[...].";
 COMPMETHODGENFUNC = 1;
 
 COMPMETHODADAPTIVEUsage = "A hybrid of the two methods COMPMETHOD_SETLENGTH and COMPMETHOD_GENFUNC which " <> 
@@ -45,10 +44,10 @@ PartitionFunctionComputationMethod = COMPMETHODADAPTIVE;
 AdaptiveMethodThreshold = 25;
 
 SetComputationMethod::usage = "Default settings are SetComputationMethod[COMPMETHOD_ADAPTIVE, 25]. See the " <> 
-                              "COMPMETHOD_* named constants usage below for additional possibilities.\n\n" <> 
-                              "COMPMETHOD_SETLENGTH: " <> ToString[COMPMETHODSETLENGTHUsage] <> "\n\n" <> 
-                              "COMPMETHOD_GENFUNC: " <> ToString[COMPMETHODGENFUNCUsage] <> "\n\n" <> 
-                              "COMPMETHOD_ADAPTIVE: " <> ToString[COMPMETHODADAPTIVEUsage] <> "\n\n";
+                              "COMPMETHOD* named constants usage below for additional possibilities.\n\n" <> 
+                              "COMPMETHODSETLENGTH: " <> ToString[COMPMETHODSETLENGTHUsage] <> "\n\n" <> 
+                              "COMPMETHODGENFUNC: " <> ToString[COMPMETHODGENFUNCUsage] <> "\n\n" <> 
+                              "COMPMETHODADAPTIVE: " <> ToString[COMPMETHODADAPTIVEUsage] <> "\n\n";
 SetComputationMethod[compMethod_, adaptiveThreshold_:25] := Block[{}, 
      If[!MemberQ[{COMPMETHODSETLENGTH, COMPMETHODGENFUNC, COMPMETHODADAPTIVE}, compMethod] || adaptiveThreshold <= 0, 
           PrintError["Invalid parameters. See ?SetComputationMethod for usage instructions."];
@@ -73,7 +72,7 @@ HP::usage = "Hamed's special partition function: \n" <>
             "Computes the number of partitions of n of the form pt+a for fixed primes p and " <> 
             "0 \[LeftTriangleEqual] a < p. The computation method of these integer counts can be changed " <> 
             "to affect the performance speed of the calculations using the function " <> 
-            "SetComputationMethod[COMPMETHOD_SETLENGTH|COMPMETHOD_GENFUNC|COMPMETHOD_ADAPTIVE].\n" <> 
+            "SetComputationMethod[COMPMETHODSETLENGTH|COMPMETHODGENFUNC|COMPMETHODADAPTIVE].\n" <> 
             "See also HPByPartitions and HPByGF.";
 HP[p_, a_, n_] := HP[p, a, n] = Module[{hpValue}, 
      hpValue = 
@@ -100,11 +99,7 @@ HPByPartitions::usage = "Same as HP[p, a, n] computed with Combinatorica's Parti
 HPByPartitions[p_, a_, n_] := HPByPartitions[p, a, n] = 
      Length[HamedPartitions[p, a, n]];
 
-HPByGF::usage = "Same as HP[p, a, n] computed by means of a truncated reciprocal product generating function. " <> 
-                 "It is not clear whether this is more efficient than HPByGF[p, a, n], but I suspect that the " <> 
-                 "former function is probably less error prone since it uses the built-in Mathematica routine for the " <> 
-                 "full infinite q-Pochhamer symbol. At any rate, this generating function method is also implemented " <> 
-                 "here for testing, verification, and comparison.";
+HPByGF::usage = "Same as HP[p, a, n] computed by means of a truncated reciprocal product generating function. ";
 HPByGF[p_, a_, n_] := HPByGF2[p, a, n] = 
      SeriesCoefficient[1 / Product[1 - Power[q, p * t + a], {t, If[a != 0, 0, 1], n + 1}], {q, 0, n}]
 
@@ -119,9 +114,9 @@ HamedPartitions::usage = "Returns the actual components of the partitions of sai
                          "more detailed structure of the partitions can be analyzed later.\n" <>
                          "To make sure this function is called every time HP[p, a, n] is called, run the " <> 
                          "following sequence of package configuration commands:\n" <> 
-                         "(1) SetComputationMethod[COMPMETHOD_SETLENGTH]\n" <>
+                         "(1) SetComputationMethod[COMPMETHODSETLENGTH]\n" <>
                          "(** OR ALTERNATELY: **)\n" <>
-                         "(2) SetComputationMethod[COMPMETHOD_ADAPTIVE, Infinity].";
+                         "(2) SetComputationMethod[COMPMETHODADAPTIVE, Infinity].";
 HamedPartitions[p_, a_, n_] := HamedPartitions[p, a, n] = 
      Module[{otf, ofTheFormFunc, partsOfTheForm, partitionIsGoodQ}, 
      otf = {#, IntegerQ[(# - a) / p]}&; 
@@ -250,7 +245,9 @@ GetPartitionRankSum[p_, a_, n_] := GetPartitionRankSum[p, a, n] =
 GetPartitionRankSumModuloBases::usage = "Computes all relevant primes p for which HP[p, a, n] === 0 (mod p), i.e., " <> 
                                         "all such primes in the range 2 <= p <= HP[p, a, n].";
 GetPartitionRankSumModuloBases[p_, a_, n_] := With[{hp = GetPartitionRankSum[p, a, n]}, 
-     Map[First, Select[Table[{p, Mod[hp, p, 0] == 0}, {p, Table[Prime[m], {m, 1, hp}]}], #[[1]] <= hp && #[[2]]&]];
+     With[{congList = Map[First, Select[Table[{pv, Mod[hp, pv, 0] == 0}, {pv, Table[Prime[m], {m, 1, hp}]}], #[[1]] <= Abs[hp] && #[[2]]&]]}, 
+          If[congList === {}, "None", congList]
+     ]
 ];
 
 (*************************************************************************)
