@@ -269,8 +269,8 @@ IdentifyHPInequality[p_, a_, n_] := Module[{p2, p1, p0, ttIneqLHS, ttIneqRHS, is
      p0 = HP[p, a, n - 1];
      p1 = HP[p, a, n];
      p2 = HP[p, a, n + 1];
-     ttIneqLHS = p2; 
-     ttIneqRHS = p0 * p1;
+     ttIneqLHS = Power[p1, 2]; 
+     ttIneqRHS = p0 * p2;
      isConvex = ttIneqLHS >= ttIneqRHS;
      isEqual = ttIneqLHS == ttIneqRHS;
      ineqDirStr = ToString[
