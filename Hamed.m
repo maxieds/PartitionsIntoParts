@@ -125,7 +125,43 @@ HamedPartitions[p_, a_, n_] := HamedPartitions[p, a, n] =
      partitionIsGoodQ[part_] := Union[Map[#1[[2]]&, part]] === {True};
      goodPartsList = Select[Map[{Map[First, #1], partitionIsGoodQ[#1]}&, partsOfTheForm], #[[2]] === True&];
      Return[Map[First, goodPartsList]];
+];
 
+HPSymmetric::usage = "Hamed's special partition function: \n" <> 
+            "Computes the number of partitions of n of the form pt+/-a for fixed primes p and " <> 
+            "0 \[LeftTriangleEqual] a < p. The computation method of these integer counts can be changed " <> 
+            "to affect the performance speed of the calculations using the function " <> 
+            "SetComputationMethod[COMPMETHODSETLENGTH|COMPMETHODGENFUNC|COMPMETHODADAPTIVE].\n" <> 
+            "See also HPByPartitions and HPByGF.";
+HPSymmetric[p_, a_, n_] := HPSymmetric[p, a, n] = Module[{hpValue}, 
+     hpValue = 
+     Which[PartitionFunctionComputationMethod == COMPMETHODSETLENGTH, HPSymmetricByPartitions[p, a, n], 
+           PartitionFunctionComputationMethod == COMPMETHODGENFUNC, HPSymmetricByGF[p, a, n], 
+           PartitionFunctionComputationMethod == COMPMETHODADAPTIVE 
+           && n >= AdaptiveMethodThreshold, HPSymmetricByGF[p, a, n], 
+           True, HPSymmetricByPartitions[p, a, n]];
+     Return[hpValue];
+];
+
+HPSymmetricByPartitions[p_, a_, n_] := HPSymmetricByPartitions[p, a, n] = 
+     Length[HamedPartitionsSymmetric[p, a, n]];
+
+HPSymmetricByGF[p_, a_, n_] := HPSymmetricByGF2[p, a, n] = 
+     Module[{gfIndices, gfProduct, absA},
+     absA = Abs[a]; 
+     gfIndices = Union[Flatten[Table[{p * t + a, p * t - a}, {t, 0, n + 1}]]];
+     gfIndices = Select[gfIndices, (!SameQ[#, 0] && # > 0)&];
+     gfProduct = Times @@ Map[(1 - Power[q, #1])&, gfIndices];
+     SeriesCoefficient[1 / gfProduct, {q, 0, n}]
+];
+
+HamedPartitionsSymmetric::usage = "Symmetric version of HamedPartitions[...].";
+HamedPartitionsSymmetric[p_, a_, n_] := HamedPartitionsSymmetric[p, a, n] = 
+     Module[{plusAParts, minusAParts, absA},
+     absA = Abs[a]; 
+     plusAParts = HamedPartitions[p, absA, n];
+     minusAParts = HamedPartitions[p, -1 * absA, n];
+     Return[Union[plusAParts, minusAParts]];
 ];
 
 UnitTestingFeaturesUsage = "Used for internal testing, verification, and what we will loosely call our " <> 
@@ -361,6 +397,7 @@ GetHPPackageUsageString[OptionsPattern[]] := Module[{lineFunc, usageDescList},
                       lineFunc["<< Hamed.m\n\n"], 
                       "Core Functions Provided by the Package: \n", 
                       lineFunc["HP[p, a, n], HamedPartitions[p, a, n];\n"], 
+                      lineFunc["HPSymmetric[p, a, n], HamedPartitionsSymmetric[p, a, n];\n"], 
                       lineFunc["PrintPartitionStats[p, a, n]; RunUnitTests[] (if you so please); etc.;\n\n"], 
                       "Helpful References: \n", 
                       lineFunc["See HPPackageHelp[], HPPackageExamples[], and the package maintainer's website at " <> 
