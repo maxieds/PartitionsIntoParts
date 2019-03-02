@@ -157,11 +157,14 @@ HPSymmetricByGF[p_, a_, n_] := HPSymmetricByGF2[p, a, n] =
 
 HamedPartitionsSymmetric::usage = "Symmetric version of HamedPartitions[...].";
 HamedPartitionsSymmetric[p_, a_, n_] := HamedPartitionsSymmetric[p, a, n] = 
-     Module[{plusAParts, minusAParts, absA},
+     Module[{otf, ofTheFormFunc, partsOfTheForm, partitionIsGoodQ, absA}, 
      absA = Abs[a]; 
-     plusAParts = HamedPartitions[p, absA, n];
-     minusAParts = HamedPartitions[p, -1 * absA, n];
-     Return[Union[plusAParts, minusAParts]];
+     otf = {#, IntegerQ[(# - absA) / p] || IntegerQ[(# + absA) / p]}&; 
+     ofTheFormFunc = Map[otf, #]&; 
+     partsOfTheForm = Map[ofTheFormFunc, Partitions[n]];
+     partitionIsGoodQ[part_] := Union[Map[#1[[2]]&, part]] === {True};
+     goodPartsList = Select[Map[{Map[First, #1], partitionIsGoodQ[#1]}&, partsOfTheForm], #[[2]] === True&];
+     Return[Map[First, goodPartsList]];
 ];
 
 UnitTestingFeaturesUsage = "Used for internal testing, verification, and what we will loosely call our " <> 
@@ -172,13 +175,13 @@ UnitTestingFeaturesUsage = "Used for internal testing, verification, and what we
                            "that this package is minimally computing what we expect it to compute instead.";
 
 CheckHPDiff::usage = UnitTestingFeaturesUsage;
-CheckHPDiff[p_, a_, n_] := HPByPartitions[p, a, n] == HPByGF[p, a, n]
+CheckHPDiff[p_, a_, n_] := HPByPartitions[p, a, n] == HPByGF[p, a, n] && HPSymmetricByPartitions[p, a, n] == HPSymmetricByGF[p, a, n];
 
 CheckHPDiff2::usage = UnitTestingFeaturesUsage;
-CheckHPDiff2[p_, n_] := HP[1, 0, n] == PartitionsP[n]
+CheckHPDiff2[p_, n_] := HP[1, 0, n] == PartitionsP[n];
 
 CheckHPDiff3::usage = UnitTestingFeaturesUsage;
-CheckHPDiff3[p_, n_] := HP[2, 1, n] == PartitionsQ[n]
+CheckHPDiff3[p_, n_] := HP[2, 1, n] == PartitionsQ[n];
 
 CheckTableValid[tableInput_] := SameQ[Union[Flatten[tableInput]], {True}];
 
